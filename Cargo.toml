@@ -1,0 +1,2 @@
+[workspace]
+members = ["donation-manager", "donation-peer"]
