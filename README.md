@@ -62,7 +62,7 @@ Creator->>Manager: Leave
 Manager-->>Manager: Remove peer
 ```
 
-The clue of the system is the donation flow. Here is how it looks like:
+The clue of the system is the donation flow. Here is what it looks like:
 
 ```mermaid
 sequenceDiagram
@@ -87,3 +87,14 @@ and
 end
 ```
 
+The last flow to implement is the withdrawal flow. It would not be very complicated:
+
+```mermaid
+sequenceDiagram
+Creator->>Peer: Withdraw
+opt Sender is owner
+    Peer->>Bank: Query balance(Peer)
+    Bank->>Peer: Balance
+    Peer->>Creator: Send(balance)
+end
+```
