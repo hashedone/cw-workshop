@@ -25,6 +25,7 @@ Here is the graph of how contracts are related to each other:
 ```mermaid
 
 classDiagram
+    direction RL
     Manager o-- Peer: Manages
     class Manager {
         join()
@@ -41,3 +42,14 @@ Note: if you find this design a bit suspicious, you are probably right - there
 are many problems with it, and in real life, it would probably be designed in a
 slightly different way. But this is how I can show some common techniques
 easily.
+
+There are four flows in this contract. Let's start with use-case of new creator
+joining donation pool:
+
+```mermaid
+sequenceDiagram
+Creator->>Manager: Join
+Manager->>Peer: Instantiate
+Peer->>Manager: Reply
+Manager-->>Manager: Register peer
+```
