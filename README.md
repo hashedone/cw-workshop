@@ -43,8 +43,8 @@ are many problems with it, and in real life, it would probably be designed in a
 slightly different way. But this is how I can show some common techniques
 easily.
 
-There are four flows in this contract. Let's start with use-case of new creator
-joining donation pool:
+There are four flows in this contract. Let's start with the use-case of a new
+creator joining the donation pool: 
 
 ```mermaid
 sequenceDiagram
@@ -52,4 +52,12 @@ Creator->>Manager: Join
 Manager->>Peer: Instantiate
 Peer->>Manager: Reply
 Manager-->>Manager: Register peer
+```
+
+Another very simple flow is the leaving one:
+
+```mermaid
+sequenceDiagram
+Creator->>Manageer: Leave
+Manager-->>Manager: Remove peer
 ```
