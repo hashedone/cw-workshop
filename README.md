@@ -49,8 +49,8 @@ creator joining the donation pool:
 ```mermaid
 sequenceDiagram
 Creator->>Manager: Join
-Manager->>Peer: Instantiate
-Peer->>Manager: Reply
+Manager->>Peer: Instantiate(config)
+Peer->>Manager: Reply(addr)
 Manager-->>Manager: Register peer
 ```
 
@@ -58,6 +58,32 @@ Another very simple flow is the leaving one:
 
 ```mermaid
 sequenceDiagram
-Creator->>Manageer: Leave
+Creator->>Manager: Leave
 Manager-->>Manager: Remove peer
 ```
+
+The clue of the system is the donation flow. Here is how it looks like:
+
+```mermaid
+sequenceDiagram
+
+Donator->>Peer1: Donate(funds)
+
+Peer1->>Manager: Donate(funds * collective_ratio)
+
+Manager->>Peer1: QueryDonators
+Peer1->>Manager: DonatorsCount
+Manager->>Peer2: QueryDonators
+Peer2->>Manager: DonatorsCount
+Manager->>Peer3: QueryDonators
+Peer3->>Manager: DonatorsCount
+
+par Send Peer1 part
+    Manager->>Peer1: Send(funds * collective_ratio * peer1_donators / total_donators)
+and
+    Manager->>Peer2: Send(funds * collective_ratio * peer2_donators / total_donators)
+and
+    Manager->>Peer3: Send(funds * collective_ratio * peer3_donators / total_donators)
+end
+```
+
