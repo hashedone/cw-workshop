@@ -106,7 +106,7 @@ pub mod exec {
         let total: u128 = weights.iter().map(|(_, weight)| weight).sum();
 
         let funds = deps.querier.query_all_balances(env.contract.address)?;
-        let send_msgs = weights.into_iter().map(|(peer, weights)| {
+        let send_msgs = weights.into_iter().filter_map(|(peer, weights)| {
             let coins: Vec<_> = funds
                 .iter()
                 .cloned()
@@ -116,9 +116,13 @@ pub mod exec {
                 })
                 .collect();
 
-            BankMsg::Send {
-                to_address: peer.to_string(),
-                amount: coins,
+            if coins.iter().all(|c| c.amount == Uint128::zero()) {
+                None
+            } else {
+                Some(BankMsg::Send {
+                    to_address: peer.to_string(),
+                    amount: coins,
+                })
             }
         });
 

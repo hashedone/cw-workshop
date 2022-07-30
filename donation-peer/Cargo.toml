@@ -13,6 +13,7 @@ library = []
 
 [dependencies]
 cosmwasm-std = "1.0.0"
-cw-storage-plus = "0.13.4"
-cw-utils = "0.13.4"
+cw-storage-plus = "0.14.0"
 serde = { version = "1", features = ["derive"] }
+cw-multi-test = "0.14.0"
+
