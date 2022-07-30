@@ -18,9 +18,8 @@ pub fn instantiate(deps: DepsMut, msg: InstantiateMsg) -> StdResult<Response> {
 pub mod exec {
     use cosmwasm_std::{to_binary, Addr, BankMsg, Order, SubMsg, SubMsgResult, Uint128, WasmMsg};
     use cw_utils::parse_instantiate_response_data;
-    use donation_peer::msg::{
-        DonatorsResp, InstantiateMsg as PeerInstantiate, QueryMsg as PeerQuery,
-    };
+    use donation_peer::msg::InstantiateMsg as PeerInstantiate;
+    use donation_peer::state::STATE;
 
     use crate::state::PENDING_INSTANTIATION;
 
@@ -96,10 +95,8 @@ pub mod exec {
             .keys(deps.storage, None, None, Order::Ascending)
             .map(|peer| -> StdResult<_> {
                 let peer = peer?;
-                let donations_resp: DonatorsResp = deps
-                    .querier
-                    .query_wasm_smart(peer.clone(), &PeerQuery::Donators {})?;
-                Ok((peer, donations_resp.donators as u128))
+                let donators = STATE.query(&deps.querier, peer.clone())?.donators;
+                Ok((peer, donators as u128))
             })
             .collect::<StdResult<_>>()?;
 
